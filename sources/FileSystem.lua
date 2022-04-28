@@ -4,14 +4,14 @@
     @Author: AsynchronousMatrix
     @Licence: ...
 
-
+	Module used to simplify importing modules
 ]]--
 
 -- // Variables
-local FileSystem = { }
+local FileSystem = { Name = "FileSystem" }
 
 -- // Functions
-function FileSystem._Require(Module, ...)
+function FileSystem.SafeRequire(Module, ...)
     local Success, Result = pcall(require, Module)
 
     if Success then
@@ -25,12 +25,12 @@ function FileSystem.LoadTable(Source, ...)
     local Result = { }
 
     for _, ModuleObject in ipairs(Source) do
-        local Result, Message = FileSystem._Require(ModuleObject, ...)
+        local Result, Message = FileSystem.SafeRequire(ModuleObject, ...)
 
         if not Result and Message then
             warn(Message)
         else
-            table.insert(Result, FileSystem._Require(ModuleObject, ...))
+            table.insert(Result, FileSystem.SafeRequire(ModuleObject, ...))
         end
     end
 
@@ -41,10 +41,30 @@ function FileSystem.LoadChildren(Source, ...)
     local Result = { }
 
     for _, ModuleObject in ipairs(Source:GetChildren()) do
-        Result[ModuleObject.Name] = FileSystem._Require(ModuleObject, ...)
+        Result[ModuleObject.Name] = FileSystem.SafeRequire(ModuleObject, ...)
     end
 
     return Result
+end
+
+function FileSystem.LoadTableInto(Source, Table, ...)
+	for _, ModuleObject in ipairs(Source) do
+		if ModuleObject == script then
+			continue
+		end
+
+        Table[ModuleObject.Name] = FileSystem.SafeRequire(ModuleObject, ...)
+    end
+end
+
+function FileSystem.LoadChildrenInto(Source, Table, ...)
+    for _, ModuleObject in ipairs(Source:GetChildren()) do
+		if ModuleObject == script then
+			continue
+		end
+
+        Table[ModuleObject.Name] = FileSystem.SafeRequire(ModuleObject, ...)
+    end
 end
 
 -- // Module
