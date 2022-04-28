@@ -22,7 +22,7 @@ function FileSystem.SafeRequire(Module, ...)
 end
 
 function FileSystem.LoadTable(Source, ...)
-	local Result = { }
+	local Results = { }
 
 	for _, ModuleObject in ipairs(Source) do
 		local Result, Message = FileSystem.SafeRequire(ModuleObject, ...)
@@ -30,11 +30,11 @@ function FileSystem.LoadTable(Source, ...)
 		if not Result and Message then
 			warn(Message)
 		else
-			table.insert(Result, FileSystem.SafeRequire(ModuleObject, ...))
+			table.insert(Results, FileSystem.SafeRequire(ModuleObject, ...))
 		end
 	end
 
-	return Result
+	return Results
 end
 
 function FileSystem.LoadChildren(Source, ...)
