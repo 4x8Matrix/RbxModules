@@ -1,0 +1,12 @@
+{
+  "name": "RbxModules",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "Common": {
+        "$path": "sources"
+      }
+    }
+  }
+}
