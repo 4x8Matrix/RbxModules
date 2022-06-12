@@ -22,29 +22,21 @@ function FileSystem.SafeRequire(Module, ...)
 end
 
 function FileSystem.LoadTable(Source, ...)
-	local Results = { }
-
 	for _, ModuleObject in ipairs(Source) do
 		local Result, Message = FileSystem.SafeRequire(ModuleObject, ...)
 
 		if not Result and Message then
 			warn(Message)
 		else
-			table.insert(Results, FileSystem.SafeRequire(ModuleObject, ...))
+			coroutine.wrap(FileSystem.SafeRequire)(ModuleObject, ...)
 		end
 	end
-
-	return Results
 end
 
 function FileSystem.LoadChildren(Source, ...)
-	local Result = { }
-
 	for _, ModuleObject in ipairs(Source:GetChildren()) do
-		Result[ModuleObject.Name] = FileSystem.SafeRequire(ModuleObject, ...)
+		coroutine.wrap(FileSystem.SafeRequire)(ModuleObject, ...)
 	end
-
-	return Result
 end
 
 function FileSystem.LoadTableInto(Source, Table, ...)
