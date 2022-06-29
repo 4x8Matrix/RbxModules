@@ -35,12 +35,12 @@ An example of the Namecall handler is;
 
 ```
 Scheduler.InitialiseJobType("Namecall", function(Job) -- If we are to create a namecall job, this will be the function which handles it.
-		local Object = table.remove(Job, 1)
-		local Method = table.remove(Job, 1)
-		local Parameters = table.remove(Job, 1)
+	local Object = table.remove(Job, 1)
+	local Method = table.remove(Job, 1)
+	local Parameters = table.remove(Job, 1)
 
-		return Object[Method](Object, table.unpack(Parameters)) -- We are then calling our function, returning the result.
-	end)
+	return Object[Method](Object, table.unpack(Parameters)) -- We are then calling our function, returning the result.
+end)
   ```
 
 By default, there are two handlers already created. 
